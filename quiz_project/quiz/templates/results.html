@@ -1,0 +1,81 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212; /* Dark background for contrast */
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #FF8C00;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .results-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            background: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .results-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #FF8C00;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background-color: #333;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .results-container a:hover {
+            background-color: #FF8C00;
+            color: #FFFFFF;
+            transform: scale(1.05);
+        }
+
+        .results-container a:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .results-container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="results-container">
+        <h1>Your Score: {{ score }}</h1>
+        <a href="{% url 'main_menu' %}">Back to Main Menu</a>
+    </div>
+</body>

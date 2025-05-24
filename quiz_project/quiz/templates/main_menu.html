@@ -1,0 +1,218 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Reset */
+         /* Container for particles background */
+         #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1; /* Ensure content stays on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #121212; /* Dark background for contrast */
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #FF8C00;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .menu-container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            background: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .menu-container a {
+            display: inline-block;
+            margin: 15px 0;
+            padding: 15px 30px;
+            background-color: #FF8C00;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-container a:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        .menu-container a:active {
+            transform: scale(0.98);
+        }
+
+        .link-btn i {
+            margin-right: 10px; /* Space between the icon and the text */
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .logout-btn i {
+            margin-right: 10px; /* Space between the icon and the text */
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .menu-container {
+                padding: 20px;
+            }
+
+            .menu-container a {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particle background container -->
+    <div id="particles-js"></div>
+    <div class="content">
+        <div class="menu-container">
+            <h1>Welcome to BrainHub, {{ user.username }}!</h1>
+
+            <a href="{% url 'start_quiz' %}" id="startBtn" class="link-btn">
+                <i class="fas fa-play"></i>Start Quiz
+            </a>
+            <a href="{% url 'high_scores' %}" class="link-btn">
+                <i class="fas fa-trophy"></i>View Scores
+            </a>
+            <a href="{% url 'logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>Logout
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 100, 
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#FF8C00"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 40,
+                        "size_min": 0.1
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#FF8C00",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+        // Store the fact that the quiz has started
+            sessionStorage.setItem('quizStarted', 'true');
+        // Redirect to the quiz page
+            window.location.href = 'quiz.html';  // The page where the timer will be
+        });
+
+    </script>
+</body>

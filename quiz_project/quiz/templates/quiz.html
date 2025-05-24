@@ -1,0 +1,297 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <style>
+        /* Basic Reset */
+         /* Container for particles background */
+         #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1; /* Ensure content stays on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+            background: linear-gradient(45deg, #FF8C00, #FF4500, #FF8C00, #FF4500);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+        }
+
+         /* Keyframes for the animated background */
+         @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #FF8C00;
+            margin-bottom: 20px;
+        }
+
+        .question-container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            background: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .question-text {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #FF8C00;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #FF8C00;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #444444;
+            cursor: not-allowed;
+        }
+
+        button.correct {
+            background-color: #28a745; /* Green for correct answers */
+        }
+
+        button.incorrect {
+            background-color: #dc3545; /* Red for incorrect answers */
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        #timer {
+            font-size: 1.5rem;
+            color: #FF8C00;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .question-container {
+                padding: 20px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+
+        #timer {
+            font-size: 2em;
+            font-weight: bold;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particle background container -->
+    <div id="particles-js"></div>
+    <div id="timer">1:00</div>
+    <div class="content">
+        <div class="question-container">
+            <h1>Quiz Time!</h1>
+            <p class="question-text">{{ question.text }}</p>
+
+            <form id="quizForm" method="post" action="{% url 'check_answer' %}">
+                {% csrf_token %}
+                <input type="hidden" name="question_id" value="{{ question.id }}">
+
+                <!-- Option 1 -->
+                <button type="submit" name="answer" value="1" 
+                    {% if feedback %}
+                        class="{% if feedback.user_answer == 1 %}{{ feedback.feedback_color }}{% endif %}"
+                    {% endif %}>
+                    {{ question.option1 }}
+                </button>
+
+                <!-- Option 2 -->
+                <button type="submit" name="answer" value="2"
+                    {% if feedback %}
+                        class="{% if feedback.user_answer == 2 %}{{ feedback.feedback_color }}{% endif %}"
+                    {% endif %}>
+                    {{ question.option2 }}
+                </button>
+
+                <!-- Option 3 -->
+                <button type="submit" name="answer" value="3"
+                    {% if feedback %}
+                        class="{% if feedback.user_answer == 3 %}{{ feedback.feedback_color }}{% endif %}"
+                    {% endif %}>
+                    {{ question.option3 }}
+                </button>
+
+                <!-- Option 4 -->
+                <button type="submit" name="answer" value="4"
+                    {% if feedback %}
+                        class="{% if feedback.user_answer == 4 %}{{ feedback.feedback_color }}{% endif %}"
+                    {% endif %}>
+                    {{ question.option4 }}
+                </button>
+            </form>
+
+            <p class="feedback">{{ feedback.feedback }}</p>
+        </div>
+    </div>
+
+    <script>
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 100, 
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#FF8C00"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 40,
+                        "size_min": 0.1
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#FF8C00",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        
+        let timeLeft = 59;
+        const timer = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert("Time's up!");
+                window.location.href = "{% url 'quiz_results' %}";  // Redirect to your results page
+            } else {
+                document.getElementById('timer').textContent = timeLeft;
+                timeLeft--;
+            }
+        }, 1000);
+
+
+    </script>
+</body>

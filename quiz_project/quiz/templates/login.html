@@ -1,0 +1,254 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <style>
+        /* Basic Reset */
+        /* Container for particles background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1; /* Ensure content stays on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212; /* Dark background for contrast */
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #FF8C00;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            background: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .form-container input {
+            background-color: #333;
+            color: #FFFFFF;
+        }
+
+        .form-container button {
+            background-color: #FF8C00;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        .form-container button:active {
+            transform: scale(0.98);
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #FF8C00;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .form-container a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-container input,
+            .form-container button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particle background container -->
+    <div id="particles-js"></div>
+
+    <div class="content">
+        <div class="form-container">
+            <h1>Login to BrainHub</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name == "password" %}
+                        <div style="position: relative;">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            <span onclick="togglePassword()" style="position:absolute; right:15px; top:42px; cursor:pointer;">
+                                <i class="fa-solid fa-eye" id="eye-icon" style="color: #FF8C00;"></i>
+                            </span>            
+                        </div>
+                    {% else %}
+                        {{ field.label_tag }}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit">Login</button>
+                
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                  
+            </form>
+            <a href="{% url 'register' %}">Don't have an account? Register</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.querySelector('input[name="password"]');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 100, 
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#FF8C00"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 40,
+                        "size_min": 0.1
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#FF8C00",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>

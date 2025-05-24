@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Scores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background color */
+            color: #FFFFFF; /* Light text color for contrast */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* High Scores Container */
+        .high-scores {
+            margin-top: 50px;
+            padding: 30px;
+            text-align: center;
+            background-color: #1f1f1f; /* Semi-transparent dark background */
+            border-radius: 10px;
+            max-width: 900px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .high-scores h3 {
+            font-size: 2rem;
+            color: #FF8C00; /* Orange accent for the title */
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        /* Table Styles */
+        .high-scores table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .high-scores table th, .high-scores table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #FF8C00;
+            font-size: 1.2rem;
+        }
+
+        .high-scores table th {
+            background-color: #2a2a2a;
+            color: #FF8C00;
+            font-weight: bold;
+        }
+
+        .high-scores table tr {
+            background-color: #333333;
+        }
+
+        .high-scores table tr:hover {
+            background-color: #444444; /* Darken row on hover */
+        }
+
+        .high-scores table td {
+            color: #f5f5f5; /* Light text color */
+        }
+
+        /* Button Style */
+        .high-scores button {
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            border: none;
+            background-color: #FF8C00;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .high-scores button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        .back-btn i {
+            margin-right: 10px;
+        }
+
+        /* Footer Style */
+        footer {
+            background-color: #141414;
+            color: #FF8C00;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2rem;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="high-scores">
+        <h3>Top Players</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in user_high_scores %}
+                <tr>
+                    <td>{{ score.user__username }}</td>
+                    <td>{{ score.max_score }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No scores yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button onclick="window.location.href='{% url 'main_menu' %}'" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Back to Menu
+        </button>
+    </div>
+
+    <footer>
+        &copy; 2025 Quiz Game. All Rights Reserved.
+    </footer>
+</body>
+</html>
